@@ -1,11 +1,42 @@
 import React from "react";
 import ThreatSearch from "@/components/ThreatSearch";
 import ThreatResults from "@/components/ThreatResults";
+import WhoisInfo from "@/components/WhoisInfo";
 import { useToast } from "@/components/ui/use-toast";
 import type { ThreatResult } from "@/components/ThreatResults";
 import { Rss, Globe, Database, Shield, Server, Network } from "lucide-react";
 
-// Sample data - in a real app, this would come from an API
+// Sample WHOIS data - in a real app, this would come from an API
+const sampleWhoisData = {
+  "192.168.1.1": {
+    ip: "192.168.1.1",
+    organization: "Private Network",
+    country: "United States",
+    city: "Los Angeles",
+    network: "192.168.0.0/16",
+    registrar: "IANA",
+    lastUpdated: "2024-01-28",
+  },
+  "10.0.0.1": {
+    ip: "10.0.0.1",
+    organization: "Private Network",
+    country: "United States",
+    city: "New York",
+    network: "10.0.0.0/8",
+    registrar: "IANA",
+    lastUpdated: "2024-01-28",
+  },
+  "172.16.0.1": {
+    ip: "172.16.0.1",
+    organization: "Private Network",
+    country: "United States",
+    city: "Chicago",
+    network: "172.16.0.0/12",
+    registrar: "IANA",
+    lastUpdated: "2024-01-28",
+  },
+};
+
 const sampleResults: ThreatResult[] = [
   {
     id: "1",
@@ -76,6 +107,7 @@ const Index = () => {
   const { toast } = useToast();
   const [results, setResults] = React.useState<ThreatResult[]>([]);
   const [searchedIP, setSearchedIP] = React.useState<string>("");
+  const [whoisData, setWhoisData] = React.useState<typeof sampleWhoisData[keyof typeof sampleWhoisData] | null>(null);
 
   const isIPAddress = (query: string) => {
     // Basic IP validation regex
@@ -89,6 +121,15 @@ const Index = () => {
       const sourcesWithIP = feedSources.filter(source => 
         source.knownIPs.includes(query)
       );
+
+      // Set WHOIS data if available
+      setWhoisData(sampleWhoisData[query as keyof typeof sampleWhoisData] || {
+        ip: query,
+        organization: "Unknown",
+        country: "Unknown",
+        network: "Unknown",
+        lastUpdated: new Date().toISOString().split('T')[0],
+      });
 
       if (sourcesWithIP.length > 0) {
         setResults(sampleResults);
@@ -105,6 +146,7 @@ const Index = () => {
       }
     } else if (query.trim()) {
       setSearchedIP("");
+      setWhoisData(null);
       setResults(sampleResults);
       toast({
         title: "Search completed",
@@ -125,6 +167,8 @@ const Index = () => {
       <div className="mb-8 flex justify-center">
         <ThreatSearch onSearch={handleSearch} />
       </div>
+
+      {whoisData && <WhoisInfo data={whoisData} isVisible={Boolean(searchedIP)} />}
 
       <div className="mb-8">
         <h2 className="mb-4 text-xl font-semibold text-center">Top Threat Intelligence Sources</h2>

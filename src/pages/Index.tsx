@@ -38,41 +38,73 @@ const feedSources = [
     name: "AlienVault OTX",
     description: "Open Threat Exchange",
     icon: Globe,
+    knownIPs: ["192.168.1.1", "10.0.0.1"],
   },
   {
     name: "VirusTotal",
     description: "Malware Intelligence",
     icon: Shield,
+    knownIPs: ["192.168.1.1"],
   },
   {
     name: "Abuse.ch",
     description: "Malware Tracking",
     icon: Database,
+    knownIPs: ["192.168.1.1", "172.16.0.1"],
   },
   {
     name: "MISP",
     description: "Threat Sharing Platform",
     icon: Server,
+    knownIPs: ["10.0.0.1"],
   },
   {
     name: "PhishTank",
     description: "Phishing Database",
     icon: Network,
+    knownIPs: ["192.168.1.1"],
   },
   {
     name: "Emerging Threats",
     description: "Network Security",
     icon: Rss,
+    knownIPs: ["172.16.0.1"],
   },
 ];
 
 const Index = () => {
   const { toast } = useToast();
   const [results, setResults] = React.useState<ThreatResult[]>([]);
+  const [searchedIP, setSearchedIP] = React.useState<string>("");
+
+  const isIPAddress = (query: string) => {
+    // Basic IP validation regex
+    const ipRegex = /^(\d{1,3}\.){3}\d{1,3}$/;
+    return ipRegex.test(query);
+  };
 
   const handleSearch = (query: string) => {
-    // In a real app, this would make an API call
-    if (query.trim()) {
+    if (isIPAddress(query)) {
+      setSearchedIP(query);
+      const sourcesWithIP = feedSources.filter(source => 
+        source.knownIPs.includes(query)
+      );
+
+      if (sourcesWithIP.length > 0) {
+        setResults(sampleResults);
+        toast({
+          title: "IP Found in Threat Feeds",
+          description: `IP ${query} was found in ${sourcesWithIP.length} threat feeds`,
+        });
+      } else {
+        setResults([]);
+        toast({
+          title: "IP Not Found",
+          description: "This IP was not found in any threat feeds",
+        });
+      }
+    } else if (query.trim()) {
+      setSearchedIP("");
       setResults(sampleResults);
       toast({
         title: "Search completed",
@@ -100,10 +132,22 @@ const Index = () => {
           {feedSources.map((source) => (
             <div
               key={source.name}
-              className="flex items-center p-4 bg-white rounded-lg shadow-sm border hover:border-primary/50 transition-colors"
+              className={`flex items-center p-4 bg-white rounded-lg shadow-sm border hover:border-primary/50 transition-colors ${
+                searchedIP && source.knownIPs.includes(searchedIP)
+                  ? "border-red-500 bg-red-50"
+                  : ""
+              }`}
             >
-              <div className="p-2 bg-lavender rounded-full mr-4">
-                <source.icon className="h-5 w-5 text-primary" />
+              <div className={`p-2 rounded-full mr-4 ${
+                searchedIP && source.knownIPs.includes(searchedIP)
+                  ? "bg-red-100"
+                  : "bg-lavender"
+              }`}>
+                <source.icon className={`h-5 w-5 ${
+                  searchedIP && source.knownIPs.includes(searchedIP)
+                    ? "text-red-500"
+                    : "text-primary"
+                }`} />
               </div>
               <div>
                 <h3 className="font-medium">{source.name}</h3>

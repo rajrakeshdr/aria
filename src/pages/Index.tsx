@@ -79,24 +79,26 @@ const Index = () => {
   const handleSearch = (query: string) => {
     if (isIPAddress(query)) {
       setSearchedIP(query);
-      const sourcesWithIP = feedSources.filter(source => 
-        source.knownIPs.includes(query)
-      );
 
       // Set WHOIS data if available
-      setWhoisData(sampleWhoisData[query as keyof typeof sampleWhoisData] || {
+      const defaultWhoisData = {
         ip: query,
         organization: "Unknown",
         country: "Unknown",
+        city: "Unknown",
         network: "Unknown",
+        registrar: "Unknown",
         lastUpdated: new Date().toISOString().split('T')[0],
-      });
+      };
 
-      if (sourcesWithIP.length > 0) {
+      setWhoisData(sampleWhoisData[query as keyof typeof sampleWhoisData] || defaultWhoisData);
+
+      // Check if IP is in threat feeds
+      if (Object.keys(sampleWhoisData).includes(query)) {
         setResults(sampleResults);
         toast({
           title: "IP Found in Threat Feeds",
-          description: `IP ${query} was found in ${sourcesWithIP.length} threat feeds`,
+          description: `IP ${query} was found in threat feeds`,
         });
       } else {
         setResults([]);

@@ -2,9 +2,9 @@ import React from "react";
 import ThreatSearch from "@/components/ThreatSearch";
 import ThreatResults from "@/components/ThreatResults";
 import WhoisInfo from "@/components/WhoisInfo";
-import { useToast } from "@/components/ui/use-toast";
+import ThreatFeeds from "@/components/ThreatFeeds";
+import { useToast } from "@/hooks/use-toast";
 import type { ThreatResult } from "@/components/ThreatResults";
-import { Rss, Globe, Database, Shield, Server, Network } from "lucide-react";
 
 // Sample WHOIS data - in a real app, this would come from an API
 const sampleWhoisData = {
@@ -61,45 +61,6 @@ const sampleResults: ThreatResult[] = [
     severity: "low",
     lastSeen: "2024-01-26",
     confidence: 75,
-  },
-];
-
-const feedSources = [
-  {
-    name: "AlienVault OTX",
-    description: "Open Threat Exchange",
-    icon: Globe,
-    knownIPs: ["192.168.1.1", "10.0.0.1"],
-  },
-  {
-    name: "VirusTotal",
-    description: "Malware Intelligence",
-    icon: Shield,
-    knownIPs: ["192.168.1.1"],
-  },
-  {
-    name: "Abuse.ch",
-    description: "Malware Tracking",
-    icon: Database,
-    knownIPs: ["192.168.1.1", "172.16.0.1"],
-  },
-  {
-    name: "MISP",
-    description: "Threat Sharing Platform",
-    icon: Server,
-    knownIPs: ["10.0.0.1"],
-  },
-  {
-    name: "PhishTank",
-    description: "Phishing Database",
-    icon: Network,
-    knownIPs: ["192.168.1.1"],
-  },
-  {
-    name: "Emerging Threats",
-    description: "Network Security",
-    icon: Rss,
-    knownIPs: ["172.16.0.1"],
   },
 ];
 
@@ -170,43 +131,13 @@ const Index = () => {
 
       {whoisData && <WhoisInfo data={whoisData} isVisible={Boolean(searchedIP)} />}
 
-      <div className="mb-8">
-        <h2 className="mb-4 text-xl font-semibold text-center">Top Threat Intelligence Sources</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {feedSources.map((source) => (
-            <div
-              key={source.name}
-              className={`flex items-center p-4 bg-white rounded-lg shadow-sm border hover:border-primary/50 transition-colors ${
-                searchedIP && source.knownIPs.includes(searchedIP)
-                  ? "border-red-500 bg-red-50"
-                  : ""
-              }`}
-            >
-              <div className={`p-2 rounded-full mr-4 ${
-                searchedIP && source.knownIPs.includes(searchedIP)
-                  ? "bg-red-100"
-                  : "bg-lavender"
-              }`}>
-                <source.icon className={`h-5 w-5 ${
-                  searchedIP && source.knownIPs.includes(searchedIP)
-                    ? "text-red-500"
-                    : "text-primary"
-                }`} />
-              </div>
-              <div>
-                <h3 className="font-medium">{source.name}</h3>
-                <p className="text-sm text-muted-foreground">{source.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {results.length > 0 && (
-        <div className="mx-auto max-w-5xl">
+        <div className="mx-auto max-w-5xl mb-8">
           <ThreatResults results={results} />
         </div>
       )}
+
+      <ThreatFeeds searchedIP={searchedIP} />
     </div>
   );
 };

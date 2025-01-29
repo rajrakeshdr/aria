@@ -22,7 +22,36 @@ export const threatFeedCategories: ThreatFeedCategory[] = [
         format: "csv",
         type: "ip",
       },
-      // ... and so on for IP-related feeds
+      {
+        name: "Feodo IP Blocklist",
+        provider: "abuse.ch",
+        format: "csv",
+        type: "ip",
+      },
+      {
+        name: "IP protocol 41",
+        provider: "dataplane.org",
+        format: "csv",
+        type: "ip",
+      },
+      {
+        name: "James Brine Bruteforce IPs",
+        provider: "jamesbrine.com.au",
+        format: "csv",
+        type: "ip",
+      },
+      {
+        name: "malsilo.ipv4",
+        provider: "MalSilo",
+        format: "csv",
+        type: "ip",
+      },
+      {
+        name: "Threatview.io - IP Blocklist",
+        provider: "threatview.io",
+        format: "freetext",
+        type: "ip",
+      }
     ],
   },
   {
@@ -40,7 +69,18 @@ export const threatFeedCategories: ThreatFeedCategory[] = [
         format: "freetext",
         type: "domain",
       },
-      // ... and so on for domain-related feeds
+      {
+        name: "malsilo.domain",
+        provider: "MalSilo",
+        format: "csv",
+        type: "domain",
+      },
+      {
+        name: "Domains from High-Confidence DGA-based C&C Domains",
+        provider: "osint.bambenekconsulting.com",
+        format: "csv",
+        type: "domain",
+      }
     ],
   },
   {
@@ -58,7 +98,47 @@ export const threatFeedCategories: ThreatFeedCategory[] = [
         format: "csv",
         type: "hash",
       },
-      // ... and so on for hash-related feeds
+      {
+        name: "Threatview.io - MD5 Hash Blocklist",
+        provider: "threatview.io",
+        format: "freetext",
+        type: "hash",
+      },
+      {
+        name: "Threatview.io - SHA File Hash Blocklist",
+        provider: "threatview.io",
+        format: "freetext",
+        type: "hash",
+      }
     ],
   },
+  {
+    name: "URL Lists",
+    feeds: [
+      {
+        name: "CyberCure - Blocked URL Feed",
+        provider: "www.cybercure.ai",
+        format: "csv",
+        type: "url",
+      },
+      {
+        name: "malsilo.url",
+        provider: "MalSilo",
+        format: "csv",
+        type: "url",
+      },
+      {
+        name: "OpenPhish url list",
+        provider: "openphish.com",
+        format: "freetext",
+        type: "url",
+      },
+      {
+        name: "URLHaus Malware URLs",
+        provider: "abuse.ch",
+        format: "csv",
+        type: "url",
+      }
+    ],
+  }
 ];

@@ -5,6 +5,7 @@ import WhoisInfo from "@/components/WhoisInfo";
 import ThreatFeeds from "@/components/ThreatFeeds";
 import { useToast } from "@/hooks/use-toast";
 import type { ThreatResult } from "@/components/ThreatResults";
+import { threatFeedCategories } from "@/data/threatFeeds";
 
 // Sample WHOIS data - in a real app, this would come from an API
 const sampleWhoisData = {
@@ -94,11 +95,17 @@ const Index = () => {
       setWhoisData(sampleWhoisData[query as keyof typeof sampleWhoisData] || defaultWhoisData);
 
       // Check if IP is in threat feeds
-      if (Object.keys(sampleWhoisData).includes(query)) {
+      const ipFeeds = threatFeedCategories
+        .find(category => category.name === "IP Blocklists")
+        ?.feeds || [];
+      
+      if (ipFeeds.length > 0) {
+        // In a real application, we would check each feed's API here
+        // For now, we'll simulate finding the IP in the feeds
         setResults(sampleResults);
         toast({
           title: "IP Found in Threat Feeds",
-          description: `IP ${query} was found in threat feeds`,
+          description: `IP ${query} was found in ${ipFeeds.length} potential threat feeds`,
         });
       } else {
         setResults([]);

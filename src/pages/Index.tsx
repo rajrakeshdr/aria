@@ -1,9 +1,9 @@
-
 import React, { useState } from "react";
 import ThreatSearch from "@/components/ThreatSearch";
 import ThreatResults from "@/components/ThreatResults";
 import WhoisInfo from "@/components/WhoisInfo";
 import ThreatFeeds from "@/components/ThreatFeeds";
+import InteractiveBackground from "@/components/InteractiveBackground";
 import { useToast } from "@/hooks/use-toast";
 import { ThreatResult } from "@/components/ThreatResults";
 import { Shield, AlertTriangle, Search } from "lucide-react";
@@ -69,107 +69,110 @@ const Index = () => {
   };
 
   return (
-    <div className="container mx-auto py-8 px-4">
-      {/* Header Section */}
-      <div className="mb-8 text-center">
-        <h1 className="mb-4 text-4xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-          AI-Enhanced Cybersecurity Platform
-        </h1>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Advanced threat intelligence and security analysis powered by AI
-        </p>
-      </div>
-
-      {/* Search Section */}
-      <div className="mb-12">
-        <div className="mb-8 flex justify-center">
-          <ThreatSearch onSearch={handleSearch} />
+    <>
+      <InteractiveBackground />
+      <div className="container mx-auto py-8 px-4 relative">
+        {/* Header Section */}
+        <div className="mb-8 text-center">
+          <h1 className="mb-4 text-4xl font-bold tracking-tight text-white">
+            AI-Enhanced Cybersecurity Platform
+          </h1>
+          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+            Advanced threat intelligence and security analysis powered by AI
+          </p>
         </div>
 
-        {/* Quick Action Buttons */}
-        <div className="flex justify-center gap-4 mb-8">
-          <Button variant="outline" className="gap-2">
-            <Shield className="h-4 w-4" />
-            Run Security Scan
-          </Button>
-          <Button variant="outline" className="gap-2">
-            <AlertTriangle className="h-4 w-4" />
-            Check Vulnerabilities
-          </Button>
-          <Button variant="outline" className="gap-2">
-            <Search className="h-4 w-4" />
-            Advanced Search
-          </Button>
-        </div>
-      </div>
+        {/* Search Section */}
+        <div className="mb-12">
+          <div className="mb-8 flex justify-center">
+            <ThreatSearch onSearch={handleSearch} />
+          </div>
 
-      {/* Results Section */}
-      {showResults && (
-        <div className="mb-12 animate-fade-in">
-          <h2 className="text-2xl font-semibold mb-6">Analysis Results</h2>
-          <div className="space-y-8">
-            <WhoisInfo data={whoisData} isVisible={true} />
-            <ThreatResults results={sampleResults} />
+          {/* Quick Action Buttons */}
+          <div className="flex justify-center gap-4 mb-8">
+            <Button variant="outline" className="gap-2 bg-white/10 backdrop-blur-sm hover:bg-white/20">
+              <Shield className="h-4 w-4" />
+              Run Security Scan
+            </Button>
+            <Button variant="outline" className="gap-2 bg-white/10 backdrop-blur-sm hover:bg-white/20">
+              <AlertTriangle className="h-4 w-4" />
+              Check Vulnerabilities
+            </Button>
+            <Button variant="outline" className="gap-2 bg-white/10 backdrop-blur-sm hover:bg-white/20">
+              <Search className="h-4 w-4" />
+              Advanced Search
+            </Button>
           </div>
         </div>
-      )}
 
-      {/* Feature Cards */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-12">
-        <Card>
-          <CardHeader>
-            <CardTitle>Real-time Threat Intelligence</CardTitle>
-            <CardDescription>
-              Analyze and monitor emerging threats in real-time
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>• Advanced threat detection</li>
-              <li>• Behavioral analysis</li>
-              <li>• Automated response recommendations</li>
-            </ul>
-          </CardContent>
-        </Card>
+        {/* Results Section */}
+        {showResults && (
+          <div className="mb-12 animate-fade-in">
+            <h2 className="text-2xl font-semibold mb-6 text-white">Analysis Results</h2>
+            <div className="space-y-8">
+              <WhoisInfo data={whoisData} isVisible={true} />
+              <ThreatResults results={sampleResults} />
+            </div>
+          </div>
+        )}
 
-        <Card>
-          <CardHeader>
-            <CardTitle>SOC Assistant</CardTitle>
-            <CardDescription>
-              AI-powered support for security operations
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>• Incident response automation</li>
-              <li>• Alert prioritization</li>
-              <li>• Threat hunting assistance</li>
-            </ul>
-          </CardContent>
-        </Card>
+        {/* Feature Cards */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-12">
+          <Card className="bg-white/10 backdrop-blur-sm border-white/20">
+            <CardHeader>
+              <CardTitle className="text-white">Real-time Threat Intelligence</CardTitle>
+              <CardDescription className="text-gray-300">
+                Analyze and monitor emerging threats in real-time
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2 text-sm text-gray-300">
+                <li>• Advanced threat detection</li>
+                <li>• Behavioral analysis</li>
+                <li>• Automated response recommendations</li>
+              </ul>
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Policy Advisor</CardTitle>
-            <CardDescription>
-              Smart security policy management
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>• Policy compliance checks</li>
-              <li>• Best practice recommendations</li>
-              <li>• Framework alignment</li>
-            </ul>
-          </CardContent>
-        </Card>
+          <Card className="bg-white/10 backdrop-blur-sm border-white/20">
+            <CardHeader>
+              <CardTitle className="text-white">SOC Assistant</CardTitle>
+              <CardDescription className="text-gray-300">
+                AI-powered support for security operations
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2 text-sm text-gray-300">
+                <li>• Incident response automation</li>
+                <li>• Alert prioritization</li>
+                <li>• Threat hunting assistance</li>
+              </ul>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white/10 backdrop-blur-sm border-white/20">
+            <CardHeader>
+              <CardTitle className="text-white">Policy Advisor</CardTitle>
+              <CardDescription className="text-gray-300">
+                Smart security policy management
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2 text-sm text-gray-300">
+                <li>• Policy compliance checks</li>
+                <li>• Best practice recommendations</li>
+                <li>• Framework alignment</li>
+              </ul>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Threat Feeds Section */}
+        <div className="mb-12">
+          <ThreatFeeds searchedIP={searchQuery} />
+        </div>
       </div>
-
-      {/* Threat Feeds Section */}
-      <div className="mb-12">
-        <ThreatFeeds searchedIP={searchQuery} />
-      </div>
-    </div>
+    </>
   );
 };
 

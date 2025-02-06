@@ -14,8 +14,8 @@ class Node {
     this.y = y;
     this.radius = radius;
     this.color = color;
-    this.vx = (Math.random() - 0.5) * 2;
-    this.vy = (Math.random() - 0.5) * 2;
+    this.vx = (Math.random() - 0.5) * 1;
+    this.vy = (Math.random() - 0.5) * 1;
   }
 
   draw(ctx: CanvasRenderingContext2D) {
@@ -59,18 +59,37 @@ const BrainNetwork: React.FC = () => {
     window.addEventListener('resize', updateCanvasSize);
 
     // Initialize nodes
-    const numNodes = 50;
+    const numNodes = 100;
     nodesRef.current = Array.from({ length: numNodes }, () => {
       const x = Math.random() * canvas.width;
       const y = Math.random() * canvas.height;
-      const radius = Math.random() * 5 + 2;
-      const color = 'rgba(255, 255, 255, 0.7)';
+      const radius = Math.random() * 2 + 1;
+      const color = 'rgba(229, 222, 255, 0.3)'; // Soft purple color with transparency
       return new Node(x, y, radius, color);
     });
 
     // Animation function
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw connections between nodes
+      ctx.strokeStyle = 'rgba(229, 222, 255, 0.1)';
+      ctx.lineWidth = 0.5;
+      
+      for (let i = 0; i < nodesRef.current.length; i++) {
+        const nodeA = nodesRef.current[i];
+        for (let j = i + 1; j < nodesRef.current.length; j++) {
+          const nodeB = nodesRef.current[j];
+          const distance = Math.hypot(nodeB.x - nodeA.x, nodeB.y - nodeA.y);
+          
+          if (distance < 100) {
+            ctx.beginPath();
+            ctx.moveTo(nodeA.x, nodeA.y);
+            ctx.lineTo(nodeB.x, nodeB.y);
+            ctx.stroke();
+          }
+        }
+      }
 
       for (const node of nodesRef.current) {
         node.update(canvas);
@@ -82,7 +101,6 @@ const BrainNetwork: React.FC = () => {
 
     animate();
 
-    // Cleanup
     return () => {
       window.removeEventListener('resize', updateCanvasSize);
       if (animationFrameRef.current) {
@@ -95,7 +113,7 @@ const BrainNetwork: React.FC = () => {
     <canvas
       ref={canvasRef}
       className="fixed top-0 left-0 w-full h-full -z-10"
-      style={{ background: 'linear-gradient(to bottom right, #1a1a1a, #2d2d2d)' }}
+      style={{ background: 'linear-gradient(to bottom right, #1A1F2C, #2C3444)' }}
     />
   );
 };

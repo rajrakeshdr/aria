@@ -41,13 +41,6 @@ const Index = () => {
     <div className="min-h-screen relative bg-[#1A1F2C]">
       <BrainNetwork />
       
-      {/* Login Icon */}
-      <div className="fixed bottom-4 left-4 z-20">
-        <Button variant="ghost" size="icon" className="rounded-full bg-[#222222]/80 hover:bg-[#222222] text-gray-300">
-          <LogIn className="h-5 w-5" />
-        </Button>
-      </div>
-      
       {/* Right Panel Toggle Button */}
       <div className="fixed top-4 right-4 z-20">
         <Button 
@@ -155,11 +148,28 @@ const Index = () => {
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
+                
+                {/* Login button positioned below the collapsible panel content */}
+                <div className="mt-6 flex justify-center">
+                  <Button variant="ghost" size="sm" className="rounded-full bg-[#222222]/80 hover:bg-[#222222] text-gray-300 flex items-center gap-2">
+                    <LogIn className="h-4 w-4" />
+                    <span>Sign In</span>
+                  </Button>
+                </div>
               </div>
             </ResizablePanel>
           </>
         )}
       </ResizablePanelGroup>
+      
+      {/* Login Icon (outside panel, only visible when panel is closed) */}
+      {!isRightPanelOpen && (
+        <div className="fixed bottom-4 left-4 z-20">
+          <Button variant="ghost" size="icon" className="rounded-full bg-[#222222]/80 hover:bg-[#222222] text-gray-300">
+            <LogIn className="h-5 w-5" />
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
